@@ -1,0 +1,13 @@
+{
+    "name": "Products",
+    "alias": "products",
+    "description": "Products module",
+    "keywords": [
+        "crm",
+        "products"
+    ],
+    "priority": 0,
+    "providers": [
+        "App\\Modules\\Products\\Providers\\ProductsServiceProvider"
+    ]
+}
