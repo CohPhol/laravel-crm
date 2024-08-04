@@ -102,7 +102,7 @@
                         </ul>
                     </div>
                 </nav>
-                <main class="py-4">
+                <main class="container py-5">
                     @yield('content')
                 </main>
             </div>

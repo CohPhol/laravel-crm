@@ -4,7 +4,7 @@ namespace App\Modules\Products\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ProductsServiceProviders extends ServiceProvider
+class ProductsServiceProvider extends ServiceProvider
 {
     protected $moduleName = 'Products';
 
@@ -12,10 +12,10 @@ class ProductsServiceProviders extends ServiceProvider
 
     public function boot()
     {
-        $this->registerTranslations();
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->registerConfig();
+        $this->register();
         $this->registerViews();
-        $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
     }
 
     public function register()
@@ -25,40 +25,20 @@ class ProductsServiceProviders extends ServiceProvider
 
     protected function registerConfig()
     {
-        $this->publishes([
-            module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
-        ], 'config');
-
-        $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'),
-            $this->moduleNameLower
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../Config/config.php', $this->moduleNameLower);
     }
 
     public function registerViews()
     {
         $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
 
-        $sourcePath = module_path($this->moduleName, 'Resources/views');
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath,
         ], ['views', $this->moduleNameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
-    }
-
-    public function registerTranslations()
-    {
-        $langPath = resource_path('lang/modules/' . $this->moduleNameLower);
-
-        if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, $this->moduleNameLower);
-            $this->loadJsonTranslationsFrom($langPath, $this->moduleNameLower);
-        } else {
-            $this->loadTranslationsFrom(module_path($this->moduleName, 'Resources/lang'), $this->moduleNameLower);
-            $this->loadJsonTranslationsFrom(module_path($this->moduleName, 'Resources/lang'), $this->moduleNameLower);
-        }
     }
 
     public function provides()

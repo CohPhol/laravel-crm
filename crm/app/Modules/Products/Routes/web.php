@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Products\Http\Controllers\Dashboard\ProductController;
+use App\Modules\Products\Http\Livewire\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +23,5 @@ Route::group([
     ],
 ], function () {
     Route::resource('products', ProductController::class);
-    Route::get('products/list', [ProductController::class, 'list'])->name('products.list');
+    Route::get('prudocts', Product::class);
 });
